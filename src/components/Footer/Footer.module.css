@@ -1,0 +1,41 @@
+.subtitle {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  bottom: 5%;
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.rowSubtitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.absent {
+  border: 1px solid rgb(255, 255, 255);
+  padding: 7px;
+  color: rgb(255, 255, 255);
+}
+
+.notFound{
+  border: 1px solid orange;
+  padding: 7px;
+  color: orange;
+}
+
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  color: #fff;
+  height: 50px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
