@@ -67,7 +67,6 @@ const InputFile = () => {
   // Função para atualizar a região
   const handleClick = useCallback(
     (e) => {
-      setButtonActive(true);
       const selectedRegion = e.target.innerText;
       setRegion(selectedRegion);
 
