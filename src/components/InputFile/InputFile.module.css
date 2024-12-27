@@ -22,9 +22,11 @@
   justify-content: center;
   margin-top: 20px;
   gap: 10px;
+  
 }
 
 .buttons button {
+  border-radius: 8px;
   padding: 10px 20px;
   background-color: #0F1214;
   border: none;
@@ -35,6 +37,11 @@
 }
 
 .buttons button:hover {
+  background-color: #ffffff;
+  color: #0F1214;
+}
+
+.activeButton {
   background-color: #ffffff;
   color: #0F1214;
 }

@@ -1,7 +1,7 @@
 // Imports gerais
 import { useDropzone } from "react-dropzone";
 import * as XLSX from "xlsx";
-import { useState, useCallback} from "react";
+import { useState, useCallback } from "react";
 
 // Imports de estilos
 import styles from "./InputFile.module.css";
@@ -9,7 +9,6 @@ import styles from "./InputFile.module.css";
 const InputFile = () => {
   const [data, setData] = useState([]); // Estado para armazenar os dados do Excel
   const [filteredData, setFilteredData] = useState([]); // Estado para armazenar os dados filtrados
-  const [isUploaded, setIsUploaded] = useState(false); // Estado para verificar se o arquivo foi enviado
   const [region, setRegion] = useState(null); // Estado para armazenar a região selecionada
 
   // Função para filtrar os dados baseado na região
@@ -17,64 +16,67 @@ const InputFile = () => {
     return data.filter(
       (row) =>
         (row.Diagnóstico === "CLIENTE AUSENTE" && row["Setor"] === region) ||
-        (row.Diagnóstico === "ENDEREÇO NÃO LOCALIZADO " && row["Setor"] === region)
+        (row.Diagnóstico === "ENDEREÇO NÃO LOCALIZADO " &&
+          row["Setor"] === region)
     );
   }, []);
 
-  const onDrop = useCallback((acceptedFiles) => {
-    const file = acceptedFiles[0]; // Pega o primeiro arquivo da lista
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0]; // Pega o primeiro arquivo da lista
 
-    if (file) {
-      // Verificação simples do tipo de arquivo
-      if (!file.name.endsWith(".xlsx") && !file.name.endsWith(".xls")) {
-        alert("Por favor, selecione um arquivo Excel.");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const binaryStr = e.target.result;
-
-        try {
-          // Leitura do arquivo Excel e conversão para JSON
-          const workBook = XLSX.read(binaryStr, { type: "binary" });
-          const worksheet = workBook.Sheets[workBook.SheetNames[0]];
-          const jsonData = XLSX.utils.sheet_to_json(worksheet);
-
-          // Atualização do estado com os dados do Excel
-          setData(jsonData);
-
-          // Filtragem dos dados baseado na região (caso tenha sido selecionada)
-          if (region) {
-            const filteredOS = filterDataByRegion(jsonData, region);
-            setFilteredData(filteredOS);
-          } else {
-            const filteredOS = filterDataByRegion(jsonData, "SBC"); // Filtro padrão para "SBC"
-            setFilteredData(filteredOS);
-          }
-        } catch (error) {
-          console.error("Erro ao ler o arquivo Excel:", error);
-          alert("Erro ao processar o arquivo Excel.");
+      if (file) {
+        // Verificação simples do tipo de arquivo
+        if (!file.name.endsWith(".xlsx") && !file.name.endsWith(".xls")) {
+          alert("Por favor, selecione um arquivo Excel.");
+          return;
         }
-      };
-      reader.readAsBinaryString(file); // Lê o arquivo como uma string binária
-    }
-  }, [filterDataByRegion, region]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsUploaded(true);
-  };
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const binaryStr = e.target.result;
+
+          try {
+            // Leitura do arquivo Excel e conversão para JSON
+            const workBook = XLSX.read(binaryStr, { type: "binary" });
+            const worksheet = workBook.Sheets[workBook.SheetNames[0]];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+            // Atualização do estado com os dados do Excel
+            setData(jsonData);
+
+            // Filtragem dos dados baseado na região (caso tenha sido selecionada)
+            if (region) {
+              const filteredOS = filterDataByRegion(jsonData, region);
+              setFilteredData(filteredOS);
+            } else {
+              const filteredOS = filterDataByRegion(jsonData, "SBC"); // Filtro padrão para "SBC"
+              setFilteredData(filteredOS);
+            }
+          } catch (error) {
+            console.error("Erro ao ler o arquivo Excel:", error);
+            alert("Erro ao processar o arquivo Excel.");
+          }
+        };
+        reader.readAsBinaryString(file); // Lê o arquivo como uma string binária
+      }
+    },
+    [filterDataByRegion, region]
+  );
 
   // Função para atualizar a região
-  const handleClick = useCallback((e) => {
-    const selectedRegion = e.target.innerText;
-    setRegion(selectedRegion);
+  const handleClick = useCallback(
+    (e) => {
+      setButtonActive(true);
+      const selectedRegion = e.target.innerText;
+      setRegion(selectedRegion);
 
-    // Após selecionar a região, filtra os dados
-    const filteredOS = filterDataByRegion(data, selectedRegion);
-    setFilteredData(filteredOS);
-  }, [data, filterDataByRegion]);
+      // Após selecionar a região, filtra os dados
+      const filteredOS = filterDataByRegion(data, selectedRegion);
+      setFilteredData(filteredOS);
+    },
+    [data, filterDataByRegion]
+  );
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -83,12 +85,10 @@ const InputFile = () => {
 
   return (
     <div>
-      {!isUploaded && (
-        <div {...getRootProps()} className={styles.dropzone}>
-          <input {...getInputProps()} />
-          <p>Arraste e solte o arquivo aqui ou clique para selecionar</p>
-        </div>
-      )}
+      <div {...getRootProps()} className={styles.dropzone}>
+        <input {...getInputProps()} />
+        <p>Arraste e solte o arquivo aqui ou clique para selecionar</p>
+      </div>
 
       <div className={styles.buttons}>
         <button onClick={handleClick}>SBC</button>
@@ -117,7 +117,9 @@ const InputFile = () => {
             ))}
           </ul>
         ) : (
-          <p>Nenhum dado para exibir, importe o arquivo de ordens de serviço.</p>
+          <p>
+            Nenhum dado para exibir, importe o arquivo de ordens de serviço.
+          </p>
         )}
       </div>
     </div>
