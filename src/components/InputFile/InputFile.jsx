@@ -77,10 +77,7 @@ const InputFile = () => {
   // Função para atualizar a região
   const handleClick = useCallback(
     (e) => {
-<<<<<<< HEAD
       setCopyMessage("");
-=======
->>>>>>> 51ab6e2422b1ee4761dabb1ee6737e1a39375e69
       const selectedRegion = e.target.innerText;
       setRegion(selectedRegion);
 
