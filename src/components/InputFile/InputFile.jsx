@@ -11,6 +11,8 @@ const InputFile = () => {
   const [filteredData, setFilteredData] = useState([]); // Estado para armazenar os dados filtrados
   const [region, setRegion] = useState(null); // Estado para armazenar a região selecionada
 
+  const [copyMessage, setCopyMessage] = useState("");
+
   // Função para filtrar os dados baseado na região
   const filterDataByRegion = useCallback((data, region) => {
     return data.filter(
@@ -64,10 +66,18 @@ const InputFile = () => {
     [filterDataByRegion, region]
   );
 
+  const handleCopy = () => {
+    setCopyMessage("Copiado!");
+    const text = filteredData
+      .map((row) => row["Cliente"] + " -" + row["Assunto"].substring(2) + "\n")
+      .join("");
+    navigator.clipboard.writeText(text);
+  };
+
   // Função para atualizar a região
   const handleClick = useCallback(
     (e) => {
-      setButtonActive(true);
+      setCopyMessage("");
       const selectedRegion = e.target.innerText;
       setRegion(selectedRegion);
 
@@ -98,24 +108,34 @@ const InputFile = () => {
 
       {/* Visualização dos dados filtrados */}
       <div className={styles.data}>
+        <div></div>
         {filteredData.length > 0 ? (
-          <ul>
-            {filteredData.map((row, index) => (
-              <li key={index}>
-                <p
-                  style={{
-                    color:
-                      row["Diagnóstico"] === "ENDEREÇO NÃO LOCALIZADO "
-                        ? "orange"
-                        : "white",
-                  }}
-                >
-                  <strong>{row["Cliente"]}</strong> -{" "}
-                  {row["Assunto"].substring(2)}
-                </p>
-              </li>
-            ))}
-          </ul>
+          <div>
+            <ul>
+              {filteredData.map((row, index) => (
+                <li key={index}>
+                  <p
+                    style={{
+                      color:
+                        row["Diagnóstico"] === "ENDEREÇO NÃO LOCALIZADO "
+                          ? "orange"
+                          : "white",
+                    }}
+                  >
+                    <strong>{row["Cliente"]}</strong> -{" "}
+                    {row["Assunto"].substring(2)}
+                  </p>
+                </li>
+              ))}
+            </ul>
+
+            <div>
+              <button className={styles.copy} onClick={handleCopy}>
+                Copiar
+              </button>
+              <span className={styles.copyMessage}>{copyMessage}</span>
+            </div>
+          </div>
         ) : (
           <p>
             Nenhum dado para exibir, importe o arquivo de ordens de serviço.

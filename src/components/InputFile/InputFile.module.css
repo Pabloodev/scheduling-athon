@@ -41,7 +41,24 @@
   color: #0F1214;
 }
 
-.activeButton {
+.copy {
+  margin-top: 20px;
+  background-color: #0F1214;
+  border: 1px solid white;
+  padding: 10px;
+  color: white;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 8px;
+}
+
+.copy:hover {
   background-color: #ffffff;
   color: #0F1214;
+}
+
+.copyMessage {
+  margin-top: 10px;
+  display: block;
 }
