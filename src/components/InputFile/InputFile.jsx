@@ -3,17 +3,14 @@ import { useDropzone } from "react-dropzone";
 import * as XLSX from "xlsx";
 import { useState, useCallback } from "react";
 
-// Imports de estilos
 import styles from "./InputFile.module.css";
 
 const InputFile = () => {
   const [data, setData] = useState([]); // Estado para armazenar os dados do Excel
-  const [filteredData, setFilteredData] = useState([]); // Estado para armazenar os dados filtrados
-  const [region, setRegion] = useState(null); // Estado para armazenar a região selecionada
+  const [filteredData, setFilteredData] = useState([]);
+  const [region, setRegion] = useState(null);
+  const [copyMessage, setCopyMessage] = useState('');
 
-  const [copyMessage, setCopyMessage] = useState("");
-
-  // Função para filtrar os dados baseado na região
   const filterDataByRegion = useCallback((data, region) => {
     return data.filter(
       (row) =>
@@ -25,10 +22,9 @@ const InputFile = () => {
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      const file = acceptedFiles[0]; // Pega o primeiro arquivo da lista
+      const file = acceptedFiles[0];
 
       if (file) {
-        // Verificação simples do tipo de arquivo
         if (!file.name.endsWith(".xlsx") && !file.name.endsWith(".xls")) {
           alert("Por favor, selecione um arquivo Excel.");
           return;
@@ -39,15 +35,12 @@ const InputFile = () => {
           const binaryStr = e.target.result;
 
           try {
-            // Leitura do arquivo Excel e conversão para JSON
             const workBook = XLSX.read(binaryStr, { type: "binary" });
             const worksheet = workBook.Sheets[workBook.SheetNames[0]];
             const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-            // Atualização do estado com os dados do Excel
             setData(jsonData);
 
-            // Filtragem dos dados baseado na região (caso tenha sido selecionada)
             if (region) {
               const filteredOS = filterDataByRegion(jsonData, region);
               setFilteredData(filteredOS);
@@ -67,21 +60,23 @@ const InputFile = () => {
   );
 
   const handleCopy = () => {
-    setCopyMessage("Copiado!");
     const text = filteredData
       .map((row) => row["Cliente"] + " -" + row["Assunto"].substring(2) + "\n")
       .join("");
     navigator.clipboard.writeText(text);
+    setCopyMessage('copiado')
+
+    setTimeout(() => {
+      setCopyMessage('')
+  }, 1000);
   };
 
-  // Função para atualizar a região
   const handleClick = useCallback(
     (e) => {
       setCopyMessage("");
       const selectedRegion = e.target.innerText;
       setRegion(selectedRegion);
 
-      // Após selecionar a região, filtra os dados
       const filteredOS = filterDataByRegion(data, selectedRegion);
       setFilteredData(filteredOS);
     },
@@ -106,7 +101,6 @@ const InputFile = () => {
         <button onClick={handleClick}>FRANCO</button>
       </div>
 
-      {/* Visualização dos dados filtrados */}
       <div className={styles.data}>
         <div></div>
         {filteredData.length > 0 ? (
