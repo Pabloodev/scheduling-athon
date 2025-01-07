@@ -1,4 +1,3 @@
-// Imports gerais
 import { useDropzone } from "react-dropzone";
 import * as XLSX from "xlsx";
 import { useState, useCallback } from "react";
@@ -61,7 +60,7 @@ const InputFile = () => {
 
   const handleCopy = () => {
     const text = filteredData
-      .map((row) => row["Cliente"] + " -" + row["Assunto"].substring(2) + "\n")
+      .map((row) => "- " + row["Cliente"] + " -" + row["Assunto"].substring(2) + "\n")
       .join("");
     navigator.clipboard.writeText(text);
     setCopyMessage('copiado')
