@@ -5,7 +5,7 @@ import { useState, useCallback } from "react";
 import styles from "./InputFile.module.css";
 
 const InputFile = () => {
-  const [data, setData] = useState([]); // Estado para armazenar os dados do Excel
+  const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [region, setRegion] = useState(null);
   const [copyMessage, setCopyMessage] = useState('');
@@ -24,7 +24,7 @@ const InputFile = () => {
       const file = acceptedFiles[0];
 
       if (file) {
-        if (!file.name.endsWith(".xlsx") && !file.name.endsWith(".xls")) {
+        if (!file.name.endsWith(".xlsx") || !file.name.endsWith(".xls")) {
           alert("Por favor, selecione um arquivo Excel.");
           return;
         }
@@ -38,13 +38,18 @@ const InputFile = () => {
             const worksheet = workBook.Sheets[workBook.SheetNames[0]];
             const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
+            if (jsonData.length === 0) {
+              alert("O arquivo excel está vazio.");
+              return;
+            }
+
             setData(jsonData);
 
             if (region) {
               const filteredOS = filterDataByRegion(jsonData, region);
               setFilteredData(filteredOS);
             } else {
-              const filteredOS = filterDataByRegion(jsonData, "SBC"); // Filtro padrão para "SBC"
+              const filteredOS = filterDataByRegion(jsonData, "SBC");
               setFilteredData(filteredOS);
             }
           } catch (error) {
@@ -52,7 +57,7 @@ const InputFile = () => {
             alert("Erro ao processar o arquivo Excel.");
           }
         };
-        reader.readAsBinaryString(file); // Lê o arquivo como uma string binária
+        reader.readAsBinaryString(file);
       }
     },
     [filterDataByRegion, region]
