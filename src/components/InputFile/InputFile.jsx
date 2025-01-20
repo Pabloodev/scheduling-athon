@@ -24,10 +24,10 @@ const InputFile = () => {
       const file = acceptedFiles[0];
 
       if (file) {
-        // if (!file.name.endsWith(".xlsx") || !file.name.endsWith(".xls")) {
-        //   alert("Por favor, selecione um arquivo Excel.");
-        //   return;
-        // }
+        if (!file.name.endsWith(".xlsx") && !file.name.endsWith(".xls")) {
+          alert("Por favor, selecione um arquivo Excel.");
+          return;
+        }
 
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -37,11 +37,6 @@ const InputFile = () => {
             const workBook = XLSX.read(binaryStr, { type: "binary" });
             const worksheet = workBook.Sheets[workBook.SheetNames[0]];
             const jsonData = XLSX.utils.sheet_to_json(worksheet);
-
-            if (jsonData.length === 0) {
-              alert("O arquivo excel está vazio.");
-              return;
-            }
 
             setData(jsonData);
 
