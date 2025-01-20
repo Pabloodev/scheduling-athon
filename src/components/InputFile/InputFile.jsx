@@ -24,10 +24,10 @@ const InputFile = () => {
       const file = acceptedFiles[0];
 
       if (file) {
-        if (!file.name.endsWith(".xlsx") && !file.name.endsWith(".xls")) {
-          alert("Por favor, selecione um arquivo Excel.");
-          return;
-        }
+        // if (!file.name.endsWith(".xlsx") || !file.name.endsWith(".xls")) {
+        //   alert("Por favor, selecione um arquivo Excel.");
+        //   return;
+        // }
 
         const reader = new FileReader();
         reader.onload = (e) => {
