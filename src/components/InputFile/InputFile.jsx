@@ -5,7 +5,7 @@ import { useState, useCallback } from "react";
 import styles from "./InputFile.module.css";
 
 const InputFile = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([]); // Estado para armazenar os dados do Excel
   const [filteredData, setFilteredData] = useState([]);
   const [region, setRegion] = useState(null);
   const [copyMessage, setCopyMessage] = useState('');
@@ -44,7 +44,7 @@ const InputFile = () => {
               const filteredOS = filterDataByRegion(jsonData, region);
               setFilteredData(filteredOS);
             } else {
-              const filteredOS = filterDataByRegion(jsonData, "SBC");
+              const filteredOS = filterDataByRegion(jsonData, "SBC"); // Filtro padrão para "SBC"
               setFilteredData(filteredOS);
             }
           } catch (error) {
@@ -52,7 +52,7 @@ const InputFile = () => {
             alert("Erro ao processar o arquivo Excel.");
           }
         };
-        reader.readAsBinaryString(file);
+        reader.readAsBinaryString(file); // Lê o arquivo como uma string binária
       }
     },
     [filterDataByRegion, region]
