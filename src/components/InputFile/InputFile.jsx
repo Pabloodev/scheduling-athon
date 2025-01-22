@@ -8,7 +8,7 @@ const InputFile = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [region, setRegion] = useState(null);
-  const [copyMessage, setCopyMessage] = useState('');
+  const [copyMessage, setCopyMessage] = useState("");
 
   const filterDataByRegion = useCallback((data, region) => {
     return data.filter(
@@ -46,6 +46,7 @@ const InputFile = () => {
             } else {
               const filteredOS = filterDataByRegion(jsonData, "SBC");
               setFilteredData(filteredOS);
+              setRegion("SBC");
             }
           } catch (error) {
             console.error("Erro ao ler o arquivo Excel:", error);
@@ -60,19 +61,23 @@ const InputFile = () => {
 
   const handleCopy = () => {
     const text = filteredData
-      .map((row) => "- " + row["Cliente"] + " -" + row["Assunto"].substring(2) + "\n")
+      .map(
+        (row) =>
+          "- " + row["Cliente"] + " -" + row["Assunto"].substring(2) + "\n"
+      )
       .join("");
     navigator.clipboard.writeText(text);
-    setCopyMessage('copiado')
+    setCopyMessage("copiado");
 
     setTimeout(() => {
-      setCopyMessage('')
-  }, 1000);
+      setCopyMessage("");
+    }, 1000);
   };
 
   const handleClick = useCallback(
     (e) => {
       setCopyMessage("");
+
       const selectedRegion = e.target.innerText;
       setRegion(selectedRegion);
 
@@ -94,10 +99,25 @@ const InputFile = () => {
         <p>Arraste e solte o arquivo aqui ou clique para selecionar</p>
       </div>
 
-      <div className={styles.buttons}>
-        <button onClick={handleClick}>SBC</button>
-        <button onClick={handleClick}>GRAJAÚ</button>
-        <button onClick={handleClick}>FRANCO</button>
+      <div className={styles.buttonsContainer}>
+        <button
+          onClick={handleClick}
+          className={region === "SBC" ? styles.active : ""}
+        >
+          SBC
+        </button>
+        <button
+          onClick={handleClick}
+          className={region === "GRAJAÚ" ? styles.active : ""}
+        >
+          GRAJAÚ
+        </button>
+        <button
+          onClick={handleClick}
+          className={region === "FRANCO" ? styles.active : ""}
+        >
+          FRANCO
+        </button>
       </div>
 
       <div className={styles.data}>

@@ -17,14 +17,14 @@
   border-collapse: collapse;
 }
 
-.buttons {
+.buttonsContainer {
   display: flex;
   justify-content: center;
   margin-top: 20px;
   gap: 10px;
 }
 
-.buttons button {
+button {
   border-radius: 8px;
   padding: 10px 20px;
   background-color: #0F1214;
@@ -35,9 +35,8 @@
   color: white;
 }
 
-.buttons button:hover {
-  background-color: #ffffff;
-  color: #0F1214;
+button:hover {
+  background-color: #444242;
 }
 
 .copy {
@@ -52,13 +51,13 @@
   border-radius: 8px;
 }
 
-.copy:hover {
-  background-color: #ffffff;
-  color: #0F1214;
-}
-
 .copyMessage {
   margin-top: 10px;
   display: block;
   color: orange;
+}
+
+.buttonsContainer button.active {
+  background-color: #3f3d3d;
+  color: white;
 }
