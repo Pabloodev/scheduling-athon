@@ -138,7 +138,6 @@ export default function Page() {
         ))}
       </div>
 
-      {/* Results Area */}
       <div className="max-w-2xl mx-auto">
         {filteredData.length > 0 ? (
           <div className="rounded-lg p-6">
@@ -177,12 +176,11 @@ export default function Page() {
           </div>
         ) : (
           <p className="text-center text-base text-orange-300">
-            Nenhum dado para exibir. Importe o arquivo de ordens de serviço.
+            Nenhum dado para exibir.
           </p>
         )}
       </div>
 
-      {/* Legend */}
       <div className="fixed bottom-8 right-8 p-4 rounded-lg">
         <div className="flex items-center gap-3 mb-2">
           <span className="w-4 h-4 bg-blue-800/30 border border-white/30 rounded bg-white"></span>
