@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: white;
+  background: rgb(27, 28, 227);
+  background: linear-gradient(261deg, rgb(17, 1, 41) 0%, rgba(0, 10, 19, 1) 46%, rgb(19, 1, 0) 100%);
+  font-family: Geist;
+}
